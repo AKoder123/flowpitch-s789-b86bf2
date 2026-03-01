@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FlowPitch</title>
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  <link rel="stylesheet" href="./styles.css" />
+  <script defer src="./app.js"></script>
+</head>
+<body>
+  <!-- Aurora background layers -->
+  <div class="bgLayer bg0" aria-hidden="true"></div>
+  <div class="bgLayer bg1" aria-hidden="true"></div>
+  <div class="bgLayer bg2" aria-hidden="true"></div>
+
+  <header id="topNav" role="banner">
+    <div class="navInner">
+      <div class="brand">
+        <div class="brandMark" aria-hidden="true"></div>
+        <span id="brandTitle">Loading…</span>
+      </div>
+      <div class="navActions">
+        <button id="prevBtn" class="ghostBtn" type="button" title="Previous (←/PgUp)">Prev</button>
+        <button id="nextBtn" class="primaryBtn" type="button" title="Next (Space/→/PgDn)">Next</button>
+        <div class="divider" aria-hidden="true"></div>
+        <button id="exportPdfBtn" class="ghostBtn" type="button" title="Export presentation as PDF">Export PDF</button>
+      </div>
+    </div>
+  </header>
+
+  <div id="topProgress" aria-hidden="true"><div id="topProgressBar"></div></div>
+  <nav id="sideDots" aria-label="Slide progress"></nav>
+
+  <main id="deck" class="slides" tabindex="0" aria-live="polite"></main>
+
+  <!-- Off-screen capture stage for PDF export -->
+  <div id="pdfStage" aria-hidden="true"></div>
+</body>
+</html>

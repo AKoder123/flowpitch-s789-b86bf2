@@ -1,0 +1,175 @@
+/* Root design tokens */
+:root{
+  --bg: #0a0b12;
+  --panel: #0f1220;
+  --panelElev: #12162a;
+  --text: rgba(255,255,255,0.92);
+  --muted: rgba(255,255,255,0.64);
+  --hairline: rgba(255,255,255,0.10);
+  --hairlineSoft: rgba(255,255,255,0.06);
+  --shadow: 0 8px 30px rgba(0,0,0,0.35), 0 2px 10px rgba(0,0,0,0.25);
+
+  /* Gradient system (aurora + accents) */
+  --bg0: radial-gradient(1200px 600px at 10% 10%, rgba(255,70,70,0.18), rgba(255,70,70,0) 55%),
+         radial-gradient(900px 600px at 85% 25%, rgba(255,150,100,0.16), rgba(255,150,100,0) 60%);
+  --bg1: radial-gradient(900px 900px at 20% 85%, rgba(120,90,255,0.12), rgba(120,90,255,0) 60%),
+         radial-gradient(700px 700px at 90% 85%, rgba(255,30,90,0.12), rgba(255,30,90,0) 60%);
+  --bg2: linear-gradient(115deg, rgba(255,75,90,0.08), rgba(120,70,255,0.08) 45%, rgba(255,170,80,0.05) 85%);
+  --accentGrad: linear-gradient(90deg, #ff5572, #ff8a5c 45%, #f0b 100%);
+  --borderGrad: linear-gradient(180deg, rgba(255,255,255,0.22), rgba(255,255,255,0.06));
+
+  --topOffset: 64px; /* computed in JS */
+
+  /* Typography scale with auto-fit multiplier */
+  --textScale: 1; /* per-slide override */
+  --h1Base: clamp(32px, 6.2vw, 64px);
+  --h2Base: clamp(28px, 4.8vw, 44px);
+  --h3Base: clamp(22px, 3.8vw, 30px);
+  --bodyBase: clamp(16px, 1.55vw, 20px);
+  --bulletBase: clamp(15.5px, 1.45vw, 19px);
+  --caption: clamp(12px, 1.2vw, 14px);
+
+  --padY: clamp(18px, 3.2vh, 28px);
+  --padX: clamp(16px, 4vw, 40px);
+  --radius: 14px;
+  --radiusLg: 18px;
+
+  --ease: cubic-bezier(.2,.7,.2,1);
+}
+
+*{box-sizing:border-box}
+html,body{height:100%;}
+html{background:var(--bg)}
+body{
+  margin:0;
+  color:var(--text);
+  font: 500 16px/1.45 system-ui, -apple-system, Segoe UI, Roboto, Inter, Helvetica, Arial, Noto Sans, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
+  background: radial-gradient(1200px 1200px at -10% -10%, rgba(255,40,60,0.12), rgba(0,0,0,0) 50%),
+              radial-gradient(1200px 1200px at 110% -10%, rgba(160,80,255,0.10), rgba(0,0,0,0) 45%),
+              #0a0b12;
+  overflow: hidden; /* scroll inside #deck */
+}
+
+/* Background Aurora layers */
+.bgLayer{
+  position:fixed; inset:0; pointer-events:none; z-index:0; filter: blur(32px) saturate(120%);
+  opacity:.85; mix-blend-mode: screen; background: transparent;
+}
+.bg0{ background: var(--bg0); }
+.bg1{ background: var(--bg1); }
+.bg2{ background: var(--bg2); opacity:.55; filter: blur(40px) saturate(130%); }
+
+/* Header */
+#topNav{ position:fixed; left:0; right:0; top:0; z-index:8; padding: max(10px, env(safe-area-inset-top)) 16px 8px; }
+#topNav .navInner{
+  display:flex; align-items:center; justify-content:space-between; gap:16px;
+  background: linear-gradient(180deg, rgba(12,14,24,.8), rgba(12,14,24,.5));
+  border:1px solid var(--hairline);
+  backdrop-filter: blur(12px) saturate(120%);
+  box-shadow: var(--shadow);
+  border-radius: 14px;
+  padding:10px 12px;
+}
+.brand{ display:flex; align-items:center; gap:10px; min-width:0; }
+.brandMark{ width:22px; height:22px; border-radius:8px; background: var(--accentGrad); box-shadow: 0 2px 10px rgba(255,85,114,.3) inset, 0 0 0 1px rgba(255,255,255,.18) inset; }
+#brandTitle{ font-weight:650; letter-spacing:.2px; font-size: clamp(14px, 2.2vw, 18px); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+
+.navActions{ display:flex; align-items:center; gap:10px; }
+.primaryBtn, .ghostBtn{
+  --btnPadY: 9px; --btnPadX: 14px; --btnRadius: 12px; --btnBorder: rgba(255,255,255,.12);
+  appearance:none; border:1px solid var(--btnBorder); color:var(--text);
+  background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+  padding: var(--btnPadY) var(--btnPadX); border-radius: var(--btnRadius);
+  font-weight: 600; letter-spacing:.2px; cursor:pointer; transition: transform .2s var(--ease), background .2s var(--ease), border-color .2s var(--ease), box-shadow .2s var(--ease);
+}
+.primaryBtn{ background: var(--accentGrad); color:#0b0b12; border-color: transparent; box-shadow: 0 6px 16px rgba(255,85,114,.25); }
+.primaryBtn:hover{ transform: translateY(-1px); filter: saturate(110%); }
+.ghostBtn:hover{ border-color: rgba(255,255,255,.22); background: linear-gradient(180deg, rgba(255,255,255,.09), rgba(255,255,255,.03)); }
+.ghostBtn:active, .primaryBtn:active{ transform: translateY(0); }
+.divider{ width:1px; height:22px; background: var(--hairline); border-radius:1px; }
+
+/* Progress UIs */
+#topProgress{ position:fixed; left:0; right:0; top:var(--topOffset); height:3px; z-index:7; pointer-events:none; }
+#topProgressBar{ height:100%; width:0%; background: var(--accentGrad); box-shadow: 0 0 0 1px rgba(255,255,255,.08) inset; border-radius:0 2px 2px 0; transition: width .35s var(--ease); }
+#sideDots{ position:fixed; right:50px; top:50%; transform:translateY(-50%); display:flex; flex-direction:column; gap:8px; z-index:7; }
+#sideDots .dotBtn{ width:9px; height:9px; border-radius:50%; background: rgba(255,255,255,.28); border:1px solid rgba(255,255,255,.18); padding:0; cursor:pointer; transition: transform .2s var(--ease), background .2s var(--ease), opacity .2s var(--ease); opacity:.8; }
+#sideDots .dotBtn[aria-current="true"]{ background: linear-gradient(180deg, #fff, #ddd); transform: scale(1.25); opacity:1; box-shadow: 0 0 0 2px rgba(255,85,114,.2); }
+@media (max-width: 720px){ #sideDots{ right:16px; opacity:.75; } #sideDots .dotBtn{ width:7px; height:7px; } }
+
+/* Slides scroll container */
+#deck{
+  position:relative; z-index:1; height:100dvh; overflow:auto; scroll-snap-type:y mandatory; -webkit-overflow-scrolling: touch; padding-top: var(--topOffset);
+}
+
+/* Slide base */
+.slide{
+  position:relative; scroll-snap-align:start; min-height: calc(100dvh - var(--topOffset));
+  display:flex; align-items:center; justify-content:center; padding: clamp(18px, 2.5vh, 28px);
+}
+.slideInner{
+  width:min(1100px, 94vw); max-width: 70ch; /* legible line length */
+  background: linear-gradient(180deg, rgba(18,22,42,.85), rgba(12,14,28,.85));
+  border:1px solid var(--hairlineSoft); border-radius: var(--radiusLg);
+  box-shadow: var(--shadow); padding: clamp(22px, 4vh, 34px) clamp(22px, 4vw, 44px);
+}
+
+/* Content slide grid for wide screens */
+.slide.type-content .slideInner, .slide.type-beforeAfter .slideInner{
+  max-width: min(1200px, 94vw);
+}
+.slideGrid{
+  display:grid; gap: clamp(18px, 4vw, 36px); align-items:start;
+}
+@media (min-width: 980px){
+  .slide.type-content .slideGrid{ grid-template-columns: 1.2fr .9fr; }
+  .slide.type-beforeAfter .slideGrid{ grid-template-columns: 1fr 1fr; }
+}
+
+/* Typography using scale */
+.grad{ background: var(--accentGrad); -webkit-background-clip:text; background-clip:text; color:transparent; }
+
+.slide h1{ font-size: calc(var(--textScale) * var(--h1Base)); line-height:1.08; margin:0 0 .4em 0; letter-spacing:.2px; font-weight:800; }
+.slide h2{ font-size: calc(var(--textScale) * var(--h2Base)); line-height:1.12; margin:0 0 .5em 0; font-weight:750; }
+.slide h3{ font-size: calc(var(--textScale) * var(--h3Base)); line-height:1.2; margin:.2em 0 .5em 0; font-weight:700; color:var(--text) }
+.slide p{ font-size: calc(var(--textScale) * var(--bodyBase)); color:var(--muted); margin:.25em 0 .75em 0; }
+.slide ul{ margin:.2em 0 0 0; padding:0; list-style:none; }
+.slide li{ position:relative; padding-left:1.2em; margin:.45em 0; font-size: calc(var(--textScale) * var(--bulletBase)); color:var(--text); }
+.slide li::before{ content:""; position:absolute; left:0; top:.6em; width:.5em; height:.5em; border-radius:50%; background: var(--accentGrad); opacity:.85; box-shadow: 0 0 0 1px rgba(255,255,255,.18); }
+
+.metaNote{ font-size: calc(var(--textScale) * var(--caption)); color:var(--muted); opacity:.9; margin-top: .6em; }
+
+/* Right column cards */
+.sidePanel{ display:flex; flex-direction:column; gap:14px; }
+.card{ background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02)); border: 1px solid var(--hairline); border-radius: 14px; padding:14px 16px; box-shadow: 0 6px 20px rgba(0,0,0,.25) inset; }
+.cardTitle{ font-weight:700; font-size: calc(var(--textScale) * clamp(15px, 1.4vw, 18px)); margin:0 0 .35em 0; opacity:.9; }
+
+/* Scroll area (if content is long) */
+.scrollArea{ max-height: min(62vh, 66dvh); overflow:auto; padding-right:4px; }
+.scrollArea::-webkit-scrollbar{ width:8px; }
+.scrollArea::-webkit-scrollbar-thumb{ background: rgba(255,255,255,.18); border-radius:8px; }
+
+/* Animations */
+[data-animate]{ opacity:0; transform: translateY(10px); filter: none; transition: opacity .6s var(--ease), transform .6s var(--ease), filter .6s var(--ease); transition-delay: var(--stagger, 0ms); }
+.slide.is-active [data-animate]{ opacity:1; transform:none; filter:none; }
+@media (prefers-reduced-motion: reduce){
+  *{ transition:none !important; animation:none !important; }
+  [data-animate]{ opacity:1 !important; transform:none !important; filter:none !important; }
+}
+
+/* Compact mode for short heights */
+body.compact .slideInner{ padding: 16px 18px; }
+body.compact .slide h1{ font-size: calc(.94 * var(--textScale) * var(--h1Base)); }
+body.compact .slide h2{ font-size: calc(.95 * var(--textScale) * var(--h2Base)); }
+body.compact .scrollArea{ max-height: min(58vh, 60dvh); }
+
+/* PDF Export stage */
+#pdfStage{ position:fixed; left:-10000px; top:0; width:1920px; height:1080px; overflow:hidden; background:#050611; z-index:-1; }
+#pdfStage .bgLayer{ position:absolute; inset:0; filter: blur(36px) saturate(120%); }
+#pdfStage .slide{ width:1920px; height:1080px; padding:90px 96px; scroll-snap-align: none; }
+#pdfStage #topProgress, #pdfStage #sideDots, #pdfStage header{ display:none !important; }
+
+/* During export: force visibility and hide progress UI to avoid artifacts */
+body.exportingPdf [data-animate]{ opacity:1 !important; transform:none !important; filter:none !important; transition:none !important; }
+body.exportingPdf #topProgress, body.exportingPdf #sideDots{ opacity:0 !important; }
+/* Safe fallback for gradient text during export (html2canvas limitation) */
+body.exportingPdf .grad{ background:none !important; -webkit-background-clip: initial !important; background-clip: initial !important; color: rgba(255,255,255,.92) !important; }
